@@ -13,20 +13,20 @@ RECORD_SECONDS = 3
 p = pyaudio.PyAudio()
 
 stream = p.open(
-    format = FORMAT,
-    channels = CHANNELS,
-    rate = RATE,
-    input = True,
-    frames_per_buffer = chunk
+    format=FORMAT,
+    channels=CHANNELS,
+    rate=RATE,
+    input=True,
+    frames_per_buffer=chunk
 )
 
-all = []
+data = []
 for i in range(0, int(RATE / chunk * RECORD_SECONDS)):
     data = stream.read(chunk)
-    all.append(data)
+    data.append(data)
 
 stream.close()
 p.terminate()
 
 fs = RATE
-data = b''.join(all)
+data = b''.join(data)
