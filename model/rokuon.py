@@ -2,6 +2,7 @@ import pyaudio
 import wave
 import glob
 
+
 # 録音時間
 RECORD_SECOND = 60 * 5
 
@@ -60,5 +61,5 @@ def get_audio():
     waveFile.setframerate(RATE)
     waveFile.writeframes(b''.join(data))
     waveFile.close()
-
+    
 get_audio()

@@ -1,18 +1,19 @@
-from sklearn.svm import SVC
 import numpy as np
-import mfcc
+from sklearn import preprocessing
+from sklearn.model_selection import train_test_split
+from sklearn.svm import SVC
+from sklearn.metrics import accuracy_score
 
-# ラベル付け
-X = np.array([mfcc.tra_data[i] for i in range(mfcc.TRAIN_DATA_NUM)])
-X = X.reshape(X.shape[0], -1)
-# yはラベル
-y = np.array([0, 1, 2, 2, 0])
 
-clf = SVC()
-clf.fit(X, y)
-# predictで次の音声データのラベルを予測する
+y = np.loadtxt("y_label.csv", delimiter=",", dtype=int)
+X = np.loadtxt("X_data.csv", delimiter=",")
+# X = preprocessing.minmax_scale(X[:, 1:]) 
+X_train, X_test, y_train, y_test = train_test_split(X, y.ravel(), test_size=0.3)
 
-for j in range(mfcc.TEST_DATA_NUM):
-    pred_data = np.array([mfcc.pred_data[j]])
-    pred_data = pred_data.reshape(pred_data.shape[0], -1)
-    print(clf.predict(pred_data))
+clf = SVC(kernel="rbf", C=1)
+clf.fit(X_train, y_train)
+
+y_pred = clf.predict(X_test)
+print(y_pred)
+acs = accuracy_score(y_test, y_pred)
+print(acs)
